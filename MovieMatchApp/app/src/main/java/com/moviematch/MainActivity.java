@@ -10,14 +10,26 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+
 public class MainActivity extends AppCompatActivity {
 
     final Animation fadeOutAnimation = new AlphaAnimation(1.0f, 0.0f);
+    Socket clientSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        try {
+            clientSocket = new Socket("localhost", 44444);
+        } catch (IOException e) {
+            System.out.println("FAILED TO CREATE CLIENT SOCKET: " + e.getStackTrace().toString());
+        }
 
         final TextView confirmationText = findViewById(R.id.confirmationText);
         fadeOutAnimation.setDuration(3000);
@@ -55,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
                 setUserId(0).setMovieName(movieText.toString()).setThumbsUp(thumbsUp).build();
 
         if (opinion.isInitialized()) {
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                opinion.writeTo(clientSocket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                signalOpinionFail();
+            }
             signalOpinionSuccess();
             movieText.clear();
         }
