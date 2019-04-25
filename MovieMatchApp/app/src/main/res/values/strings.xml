@@ -3,4 +3,8 @@
     <string name="ThumbsUpButton">Thumbs Up</string>
     <string name="ThumbsDownButton">Thumbs Down</string>
     <string name="MovieTextBox">Type Movie Name Here</string>
+    <string name="LoginEmailTextBox">Email</string>
+    <string name="LoginPasswordTextBox">Password</string>
+    <string name="LoginButton">Submit</string>
+    <string name="LoginText">Login</string>
 </resources>

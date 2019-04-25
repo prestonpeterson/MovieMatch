@@ -1,0 +1,82 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movieSelectFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".MovieSelectFragment">
+
+    <TextView
+        android:id="@+id/confirmationText"
+        android:layout_width="222dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:fitsSystemWindows="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/MovieTextBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/ThumbsDownButton"
+        android:layout_width="77dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="60dp"
+        android:background="@drawable/thumbs_down_ic_launcher_foreground"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        android:hapticFeedbackEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/MovieTextBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmationText"
+        app:layout_constraintVertical_bias="0.812" />
+
+    <Button
+        android:id="@+id/ThumbsUpButton"
+        android:layout_width="77dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/thumbs_up_ic_launcher_foreground"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        android:hapticFeedbackEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintStart_toEndOf="@+id/ThumbsDownButton"
+        app:layout_constraintTop_toTopOf="@+id/ThumbsDownButton"
+        app:layout_constraintBottom_toBottomOf="@+id/ThumbsDownButton" />
+
+    <AutoCompleteTextView
+        android:id="@+id/MovieTextBox"
+        android:layout_width="324dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:allowUndo="true"
+        android:background="@color/colorWhite"
+        android:fitsSystemWindows="true"
+        android:hint="@string/MovieTextBox"
+        android:autofillHints="movie name"
+        android:inputType="textAutoComplete"
+        android:maxLength="1000"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

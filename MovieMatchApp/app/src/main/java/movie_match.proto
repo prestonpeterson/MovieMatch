@@ -12,9 +12,10 @@ syntax = "proto3";
 
 // [END declaration]
 
+option optimize_for = LITE_RUNTIME;
 // [START java_declaration]
 option java_package = "com.moviematch";
-option java_outer_classname = "MovieOpinionProtos";
+option java_outer_classname = "MovieMatchProtos";
 // [END java_declaration]
 
 // [START messages]
@@ -22,6 +23,10 @@ message MovieOpinion {
   uint64 user_id = 1;
   string movie_name = 2;
   bool thumbs_up = 3;
+}
+
+message MovieList {
+  repeated string movie_names = 1;
 }
 
 // [END messages]
