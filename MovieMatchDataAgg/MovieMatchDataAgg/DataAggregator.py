@@ -3,41 +3,36 @@ import mysql.connector
 from bs4 import BeautifulSoup
 import json
 
-def create_table(c):
-    c.execute('CREATE TABLE IF NOT EXISTS criticTable (name TEXT, url TEXT, movies TEXT)')
-
-def data_entry(c, conn):
-    c.execute(
-        "INSERT INTO criticTable VALUES('Bill Thorpe', 'https://www.rottentomatoes.com/critic/kyle-aaronson', 'Zootopia')")
+def add_critic(conn, cursor, name, url):
+    cursor.execute("INSERT IGNORE INTO critics (name, url) VALUES(%s, %s)", (name, url))
     conn.commit()
 
-
-def data_entry(conn, name, url):
-    c.execute("INSERT INTO criticTable VALUES(?, ?, ?)", (name, url, ''))
+def add_movie(conn, cursor, name):
+    cursor.execute("INSERT IGNORE INTO movies (name) VALUES(%s)", (name,))
     conn.commit()
 
-
-def parse_critic(critic, html):
+def parse_critic(conn, cursor, critic, critic_url, html):
     soup = BeautifulSoup(html, "html.parser")
 
     all_scripts = str(soup.find('script'))
     script = all_scripts.splitlines()[1]
 
-    with open('movies.json') as f:
-        data = json.loads(script)
-        graph = data['@graph']
-        subgraph = graph[1]
-        itemListElement = subgraph['itemListElement']
-        for i in itemListElement:
-            item = i['item']
-            item_reviewed = item['itemReviewed']
-            movie = item_reviewed['name']
-            review_rating = item['reviewRating']
-            rating = review_rating['tomatometer']
-            print('critic=', critic, ', movie=', movie, ', rating=', rating, sep='')
+    data = json.loads(script)
+    graph = data['@graph']
+    subgraph = graph[1]
+    itemListElement = subgraph['itemListElement']
+    for i in itemListElement:
+        item = i['item']
+        item_reviewed = item['itemReviewed']
+        movie = item_reviewed['name']
+        add_movie(conn, cursor, movie)
+        review_rating = item['reviewRating']
+        rating = review_rating['tomatometer']
+        print('critic=', critic, ', movie=', movie, ', rating=', rating, sep='')
+        add_critic(conn, cursor, critic, critic_url)
 
 
-def parse_authors(conn):
+def parse_authors(conn, cursor):
     alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
                 'w', 'x', 'y', 'z']
     base_url = 'https://www.rottentomatoes.com/critics/authors?letter='
@@ -59,13 +54,13 @@ def parse_authors(conn):
                 critic = person.text
                 response = requests.get(critic_url)
                 html = response.content
-                parse_critic(critic, html)
+                parse_critic(conn, cursor, critic, critic_url, html)
 
 
 if __name__ == '__main__':
     conn = mysql.connector.connect(user='root', password='craft',
                                    host='127.0.0.1',
                                    database='movie_match')
-    c = conn.cursor()
-    parse_authors(conn)
+    cursor = conn.cursor()
+    parse_authors(conn, cursor)
     conn.close()

@@ -150,19 +150,13 @@ public class MovieSelectFragment extends Fragment implements View.OnClickListene
         fadeOutAnimation.setDuration(3000);
         fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+            public void onAnimationStart(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
                 getActivity().findViewById(R.id.confirmationText).setVisibility(View.INVISIBLE);
             }
-
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
     }
 
